@@ -1,6 +1,6 @@
-# Guide - Multi-React-App Monorepo with Lerna
+# Guide - React-App Monorepo with Lerna
 
-> In this guide you will learn how to scaffolder a Monorepo to manage multiple React Apps that share common components.
+> In this guide you will learn how to scaffold a Monorepo to manage multiple React Apps that share common components.
 
 Featuring:
 
