@@ -10,9 +10,16 @@ Featuring:
 - [Jest] - Unit/Snapshot Testing
 - [Babel-Loader-Lerna-CRA] - Auto-transpile sibling Lerna modules
 
-Get the code here!
+> Note: Download the code for this guide from GitHub [f1lt3r/monorepo-react](https://github.com/F1LT3R/monorepo-react).  
 
-## The Case For Monorepos
+> ### ⚠️ IMPORTANT STEPS
+> If you are checking out this code to test without using this guide, please remember to follow these important steps in order:
+> 
+> 1. `npm install` in Lerna root directory
+> 2. `npm install` in the `packages/my-react-app` directory
+> 3. `npx babel-loader-lerna-cra` in the Lerna root directory
+
+# The Case For Monorepos
 
 Imagine a scenario where you are building a suite of three React apps that share the same architecture, design patterns, components and styles. Now imaging making an update to a low-level component like a Button that is used in all three apps, as well as one sub-component.
 
@@ -46,7 +53,7 @@ That is five pull requests for a change to one button component!
 
 Clearly this is less than ideal.
 
-### A Simpler Solution
+## A Simpler Solution
 
 Now imagine using a single repo for the same update. If we use a Monorepo tool like [Lerna], the update process will look more like this:
 
@@ -144,7 +151,7 @@ Your `package.json` should now look like this:
 }
 ```
 
-## Install Storybook React
+# Install Storybook React
 
 Now we will install and initialize Storybook version 4.
 
@@ -216,7 +223,7 @@ $ tree -C .storybook stories
 
 > Note: To install tree: [`brew`/`apt-get`/`yum`/`pkg`] `install tree`
 
-# Create React App
+# Create Your React App
 
 Create a home in `packages/my-react-app` for your React App.
 
@@ -322,6 +329,8 @@ const Button = ({ type = 'button', children, onClick }) => (
 export default Button
 ```
 
+## Transpile Your Component
+
 Now lets try to transpile your React code to ECMAScript 2015 (JavaScript with support for older browsers).
 
 ```shell
@@ -369,6 +378,8 @@ var Button = function Button(_ref) {
 var _default = Button;
 exports.default = _default;
 ```
+
+## Test Your Component
 
 While we are here, lets create a Jest spec for your component in `packages/comp-button/src/index.spec.js`:
 
@@ -483,7 +494,7 @@ lerna run jest
 ![Screenshot of Jest React Test passing with Babel 7](https://imgur.com/zIzdDfH.png)
 
 
-### Add a React Component Story
+# Add a Story for Your React Component
 
 Now lets create a Storybook story for our new Button component:
 
@@ -545,7 +556,7 @@ You should now be able to see your button component Story which was built from y
 
 ![Screenshot of Storybook displaying your Button component Story](https://imgur.com/YLqC2Fi.png)
 
-## Use Your Component in The React App
+# Crosslink Your Dependencies with Lerna
 
 Add the following dependency to your `packages/my-react-app/package.json`:
 
@@ -598,7 +609,7 @@ You should see the following success message:
 
 ![Screenshot of the Lerna Bootstrap success message](https://imgur.com/XZzyCaw.png)
 
-## Use Your Component in The React App.
+# Use Your Component in The React App
 
 Add the follow lines to `packages/my-react-app/src/App.js`:
 
@@ -656,11 +667,11 @@ The React App is failing to compile because Create-React-App's Webpack config is
 
 It seems like this will problem may go away with future versions of Create-React-App, although this may require Yarn Workspaces. So make sure you check the GitHub Issue [Create-React-App-Lerna-Support] to see if this feature os landed before using the following work-around.
 
-**The Babel-Loader Lerna Workaround**
+# Rewire Your React App for Lerna
 
-I created a small Node Module to override Create-React-App Webpack configs inside Lerna projects, called [Babel-Loader-Lerna-CRA].
+I created a small Work-around Node Module to override Create-React-App Webpack configs inside Lerna projects, called [Babel-Loader-Lerna-CRA]. It's pretty simple. It just updates the Webpack paths for Babel-Loader.
 
-You can install this package using NPM
+You can install this package using NPM:
 
 ```shell
 npm i -D babel-loader-lerna-cra
@@ -739,15 +750,36 @@ You should now see the React App launch in a browser with your `CompButton` comp
 
 ![Screenshot of the React app running with a Lerna sibling component](https://imgur.com/gBfC9IH.png)
 
-Our React App can now import sibling Lerna depedencies. And changing our React component file, will hot-update the app without having to add any global watchers to the Lerna project to kick of a transpile.
+## So what did we get out of this work-around?
 
-Here is our `CompButton` component being Hot-Reloaded as it is being updated:
+- **Auto Transpilation of Lerna Siblings**
 
-![Five second animated screencast of Hot Reloading using babel-loeader-lerna-cra](https://imgur.com/ukPvQbS.gif)
+  Our React App can now import sibling Lerna depedencies and transpile then when needed.
 
-## Conclusion
+- **React App Hot Reloading**
+  
+  When we change our React component file, will hot-update the app without having to add any global watchers to the Lerna project to kick of a transpile.
 
-I think this is as far as I would like to take things in a single article.
+  Here is our `CompButton` component being Hot-Reloaded as it is being updated:
+
+  ![Five second animated screencast of Hot Reloading using babel-loeader-lerna-cra](https://imgur.com/ukPvQbS.gif)
+
+- **Storybook Hot Reloading**
+  
+  Nothing special here, but it's worth noting that our Storybook still hot-reloads too.
+
+  ![Screenshot of Storybook after hot-reloading our Button component](https://imgur.com/qrtY6qd.png)
+
+# Conclusion
+
+I think this is as far as I would like to take this in a single article. I hope someone else finds this setup useful. If people express interest, I will follow up with a Part 2 on how to setup CI to ship multiple React Apps from this Monorepo setup.
+
+
+Comments, feedback, suggestions always welcome!
+
+Always ready to learn.
+
+&mdash; Alistair MacDonald
 
 # Interesting Articles on This Topic:
 - https://medium.com/@luisvieira_gmr/building-large-scale-react-applications-in-a-monorepo-91cd4637c131
@@ -764,15 +796,3 @@ I think this is as far as I would like to take things in a single article.
 [Storybook-4-React]: https://github.com/storybooks/storybook/tree/master/app/react "Storybook React"
 [Create-React-App-Lerna-Support]: https://github.com/facebook/create-react-app/issues/1333 "Create-React-App Lerna Support"
 [Babel-Loader-Lerna-CRA]: https://www.npmjs.com/package/babel-loader-lerna-cra "Babel-Loader Lerna CRA"
-
-
-
-
-
-
-
-
-
-
-
-
