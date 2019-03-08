@@ -271,7 +271,7 @@ Create a `packages/comp-button/package.json` file like this:
 
 ```json
 {
-  "name": "@project/comp-button",
+  "name": "@my-project/comp-button",
   "version": "0.1.0",
   "description": "A simple button component",
   "main": "dist/index.js",
@@ -313,7 +313,7 @@ $ mkdir src
 $ cd src
 ```
 
-Create your React component in `packages/comp-button/index.js`:
+Create your React component in `packages/comp-button/src/index.js`:
 
 ```jsx
 import React from 'react'
@@ -427,7 +427,7 @@ describe('Button Component', function() {
 
 > Note: we installed `babel-core@7.0.0-bridge.0` and `babel-jest` earlier to make Babel 7 code compatible with Jest. (See: [Install Common Dependencies](install-common-depenencies))
 
-Add the following "jest" section to your root `package.json`:
+Add the following "jest" section to your component `package.json`:
 
 ```json
   "jest": {
@@ -473,7 +473,7 @@ Your `packages/comp-button/package.json` should now look like this:
 
 When Jest runs, `../../setupTests` file will reference `setupTests.js` in your Monorepo root.
 
-Let's add this `setupTests.js` file with some Enzyme helpers:
+Let's add this `setupTests.js` file with some Enzyme helpers in the Monorepo:
 
 ```js
 const enzyme = require('enzyme');
@@ -481,7 +481,7 @@ const Adapter = require('enzyme-adapter-react-16');
 enzyme.configure({ adapter: new Adapter() });
 ```
 
-> Note: we deliberately use the older require syntax here, so that s`etupTests.js` is loadable without additional babel configuration.
+> Note: we deliberately use the older require syntax here, so that `setupTests.js` is loadable without additional babel configuration.
 
 Now lets run Jest to see the spec working:
 
@@ -498,7 +498,7 @@ lerna run jest
 
 Now lets create a Storybook story for our new Button component:
 
-Add the following code to `index.stories.js`:
+Add the following code to `packages/comp-button/src/index.stories.js`:
 
 ```jsx
 import React from 'react'
